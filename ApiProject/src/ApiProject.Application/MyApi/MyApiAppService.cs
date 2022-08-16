@@ -1,4 +1,5 @@
 ﻿using ApiProject.EntityFrameworkCore;
+using ApiProject.Entitys;
 using ApiProject.Query;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -20,11 +21,12 @@ namespace ApiProject.MyApi
         }
 
         [HttpGet]
-        public async Task<string> asdasda()
+        public async Task<IActionResult> asdasda()
         {
             var data = unitOfWork.FromSql("SELECT Name FROM ProcessDb.dbo.AbpTenants");
-            throw new Exception();
-            return data;
+            IQueryable<DemoProductCategorys> users = unitOfWork.GetRepository<DemoProductCategorys>().GetAll();
+
+            return new OkObjectResult(data);
         }
     }
 }

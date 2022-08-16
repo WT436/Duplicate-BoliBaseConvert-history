@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace ApiProject.MyApi
 {
     public interface IMyApiAppService : IApplicationService
     {
-        Task<string> asdasda();
+        Task<IActionResult> asdasda();
     }
 }
