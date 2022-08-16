@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
@@ -24,6 +24,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\B6C.com\B6C.BE\Micro\Account\UnitOfWork\UnitOfWork.csproj" />
     <ProjectReference Include="..\ApiProject.Core\ApiProject.Core.csproj" />
   </ItemGroup>
 </Project>

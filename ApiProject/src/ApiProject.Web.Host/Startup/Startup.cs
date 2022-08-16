@@ -20,6 +20,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using System.IO;
+using Microsoft.EntityFrameworkCore;
+using ApiProject.EntityFrameworkCore;
+using UnitOfWork;
 
 namespace ApiProject.Web.Host.Startup
 {
@@ -87,6 +90,11 @@ namespace ApiProject.Web.Host.Startup
                     )
                 )
             );
+
+            services.AddDbContext<ApiProjectDbContext>(opt =>
+            {
+                opt.UseSqlServer(_appConfiguration["ConnectionStrings:Default"]);
+            }).AddUnitOfWork<ApiProjectDbContext>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
