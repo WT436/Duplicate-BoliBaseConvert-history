@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services;
+using ApiProject.MyApi.Dto;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,6 @@ namespace ApiProject.MyApi
 {
     public interface IMyApiAppService : IApplicationService
     {
-        Task<IActionResult> asdasda();
+        Task<IActionResult> Asdasda(MyDto myDto);
     }
 }

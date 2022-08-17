@@ -1,16 +1,15 @@
-﻿using ApiProject.EntityFrameworkCore;
+﻿using Abp.Web.Models;
+using ApiProject.EntityFrameworkCore;
 using ApiProject.Entitys;
-using ApiProject.Query;
+using ApiProject.MyApi.Dto;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using UnitOfWork;
 
 namespace ApiProject.MyApi
 {
+    [Route("/api/v1/[controller]/[action]")]
     public class MyApiAppService : IMyApiAppService
     {
         private readonly IUnitOfWork unitOfWork;
@@ -21,14 +20,13 @@ namespace ApiProject.MyApi
         }
 
         [HttpGet]
-        public async Task<IActionResult> asdasda()
+        public async Task<IActionResult> Asdasda(MyDto myDto)
         {
-            var data = unitOfWork.FromSql("SELECT Name FROM ProcessDb.dbo.AbpTenants");
-            IQueryable<DemoProductCategorys> users = unitOfWork.GetRepository<DemoProductCategorys>().GetAll();
-            unitOfWork.GetRepository<DemoProductCategorys>().Insert(new DemoProductCategorys { Name = "cmn", Active = true });
+            var data = unitOfWork.FromSql<DemoProductCategorys>("SELECT *FROM  DemoProductCategorys");
+            //IQueryable<DemoProductCategorys> users = unitOfWork.GetRepository<DemoProductCategorys>().GetAll();
+            //unitOfWork.GetRepository<DemoProductCategorys>().Insert(new DemoProductCategorys { Name = "cmn", Active = true });
             unitOfWork.SaveChanges();
-            throw new Exception();
-            return new OkObjectResult(users.ToList());
+            return new OkObjectResult(data.ToList());
         }
     }
 }

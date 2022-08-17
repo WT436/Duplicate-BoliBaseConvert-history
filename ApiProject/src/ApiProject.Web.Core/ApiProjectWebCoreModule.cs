@@ -20,7 +20,7 @@ namespace ApiProject
          typeof(ApiProjectApplicationModule),
          typeof(ApiProjectEntityFrameworkModule),
          typeof(AbpAspNetCoreModule)
-        ,typeof(AbpAspNetCoreSignalRModule)
+        , typeof(AbpAspNetCoreSignalRModule)
      )]
     public class ApiProjectWebCoreModule : AbpModule
     {
@@ -35,6 +35,9 @@ namespace ApiProject
 
         public override void PreInitialize()
         {
+            Configuration.Modules.AbpAspNetCore().DefaultWrapResultAttribute.WrapOnError = false;
+            Configuration.Modules.AbpAspNetCore().DefaultWrapResultAttribute.WrapOnSuccess = false;
+
             Configuration.DefaultNameOrConnectionString = _appConfiguration.GetConnectionString(
                 ApiProjectConsts.ConnectionStringName
             );
