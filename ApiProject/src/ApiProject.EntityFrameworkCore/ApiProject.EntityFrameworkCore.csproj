@@ -24,7 +24,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\B6C.com\B6C.BE\Micro\Account\UnitOfWork\UnitOfWork.csproj" />
     <ProjectReference Include="..\ApiProject.Core\ApiProject.Core.csproj" />
   </ItemGroup>
 </Project>

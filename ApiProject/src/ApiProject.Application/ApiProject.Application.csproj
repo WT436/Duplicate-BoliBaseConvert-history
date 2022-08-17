@@ -14,5 +14,6 @@
   <ItemGroup>
     <ProjectReference Include="..\ApiProject.Core\ApiProject.Core.csproj" />
     <ProjectReference Include="..\ApiProject.EntityFrameworkCore\ApiProject.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\UnitOfWork\UnitOfWork.csproj" />
   </ItemGroup>
 </Project>
