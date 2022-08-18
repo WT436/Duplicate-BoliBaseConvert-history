@@ -10,7 +10,7 @@ import Utils from './utils/utils';
 import registerServiceWorker from './registerServiceWorker';
 import abpLocalizationConfigService from './services/abpLocalizationConfigService';
 import defaultConfig from './localization/defaultConfig.json';
-import loginService from './scenes/OAuthAreas/Login/services';
+import service from './scenes/OAuthAreas/Login/services';
 import configureStore from './redux/configureStore';
 import { Provider } from 'react-redux';
 
@@ -20,7 +20,7 @@ Utils.setLocalization();
 abpLocalizationConfigService.getLocalization().then(async function (res) {
     Utils.extend(true, abp, defaultConfig);
     if (!!abp.auth.getToken()) {
-        let checktoken = await loginService.checkToken(abp.auth.getToken());
+        let checktoken = await service.checkToken(abp.auth.getToken());
         if (checktoken) {
             abp.session.userId = checktoken.userId;
             abp.auth.setRoles(checktoken.roleList, undefined);

@@ -16,7 +16,7 @@ export default function UserLayout(props: ILayoutProps) {
   return (
     <Col className="container">
       <HeaderComponent />
-      <div style={{ margin: '0px 30px 10px 30px' }}>
+      <div>
         <Switch>
           {userRouter
             .filter((item: any) => !item.isLayout)

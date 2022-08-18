@@ -1,9 +1,11 @@
 import * as React from 'react';
-import { Button, Card, Checkbox, Col, Input, Select } from 'antd';
+import { Button, Checkbox, Col, Divider, Input, Select } from 'antd';
 import { L } from "../../../../lib/abpUtility";
-import Form, { FormInstance } from 'antd/lib/form';
+import Form from 'antd/lib/form';
 import '../style.css'
 import { useState } from 'react';
+import service from '../services'
+import Authv2Component from './authv2Component';
 
 const { Option } = Select;
 //const key = 'login';
@@ -16,12 +18,11 @@ export default function Signin(props: ISigninProps) {
 
     const [loadding, setloadding] = useState<boolean>(false);
 
-    const onFinish = (values: any) => {
+    const onFinish = async (values: any) => {
         setloadding(true);
-        setTimeout(function () { //Start the timer
-            setloadding(false);
-        }, 5000)
-        console.log('Success:', values);
+        let checktoken = await service.isTenantAvailable({ tenancyName: "Default" });
+        console.log('Success:', checktoken);
+        setloadding(false);
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -41,7 +42,7 @@ export default function Signin(props: ISigninProps) {
                 className='fxgoyaPanE'
             >
                 <div className='URQKddgnba'>
-                    <img src="" alt="" />
+                    <img src="./logo512.png" alt="" />
                 </div>
                 <div className='nRqxyzTkGx'>
                     <span className="ant-form-text">{L("Đăng Nhập", "COMMON")}</span>
@@ -50,11 +51,11 @@ export default function Signin(props: ISigninProps) {
                     label={L("Phân hệ", "COMMON")}
                     name="tenant"
                     style={{ cursor: 'pointer' }}
-                    rules={[{ required: true, message: 'Please input your password!' }]}>
+                >
                     <Select
                         showSearch
                         style={{ width: '100%' }}
-                        placeholder="Search to Select"
+                        placeholder={L("Lựa chọn phân hệ", "COMMON")}
                         optionFilterProp="children"
                         filterOption={(input, option) => (option!.children as unknown as string).includes(input)}
                         filterSort={(optionA, optionB) =>
@@ -74,20 +75,20 @@ export default function Signin(props: ISigninProps) {
                 <Form.Item
                     label={L("Tài khoản", "COMMON")}
                     name="username"
-                    rules={[{ required: true, message: 'Please input your username!' }]}
+                    rules={[{ required: true, message: L("Tài khoản không được để trống!", "COMMON") }]}
                 >
-                    <Input />
+                    <Input placeholder={L("Tài khoản", "COMMON")} />
                 </Form.Item>
                 <Form.Item
                     label={L("Mật khẩu", "COMMON")}
                     name="password"
-                    rules={[{ required: true, message: 'Please input your password!' }]}
+                    rules={[{ required: true, message: L("Mật khẩu không để trống!", "COMMON") }]}
                 >
-                    <Input.Password />
+                    <Input.Password placeholder={L("Mật khẩu", "COMMON")} />
                 </Form.Item>
 
                 <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 4, span: 20 }}>
-                    <Checkbox> {L("Remember me", "COMMON")}</Checkbox>
+                    <Checkbox>{L("Remember me", "COMMON")}</Checkbox>
                 </Form.Item>
 
                 <Form.Item wrapperCol={{ offset: 6, span: 12 }}>
@@ -99,6 +100,8 @@ export default function Signin(props: ISigninProps) {
                     <div><a href="">{L("Đăng ký ngay!", "COMMON")}</a></div>
                     <div><a href="">{L("Đổi mật khẩu!", "COMMON")}</a></div>
                 </div>
+                <Divider orientation="center">Or</Divider>
+                <Authv2Component location={undefined} />
             </Form>
         </Col>
     )

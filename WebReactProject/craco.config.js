@@ -6,12 +6,16 @@ module.exports = {
     plugins: [{
         plugin: CracoAntDesignPlugin,
         options: {
+            // customizeTheme: {
+            //     '@primary-color': '#1DA57A',
+            //     '@link-color': '#1DA57A',
+            // },
             customizeTheme: {
-                '@primary-color': '#1DA57A',
-                '@link-color': '#1DA57A',
+                '@primary-color': '#1890ff',
+                '@link-color': '#1890ff',
             },
         },
-    }, ],
+    },],
     webpack: {
         alias: {},
         plugins: [],
@@ -22,12 +26,12 @@ module.exports = {
 
             webpackConfig.plugins.push(
                 process.env.NODE_ENV === 'production' ?
-                new CopyWebpackPlugin([{
-                    from: 'src/lib/abp.js'
-                }]) :
-                new CopyWebpackPlugin([{
-                    from: 'src/lib/abp.js'
-                }])
+                    new CopyWebpackPlugin([{
+                        from: 'src/lib/abp.js'
+                    }]) :
+                    new CopyWebpackPlugin([{
+                        from: 'src/lib/abp.js'
+                    }])
             );
 
             return webpackConfig;

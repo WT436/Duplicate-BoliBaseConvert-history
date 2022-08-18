@@ -11,12 +11,6 @@
     <UserSecretsId>AbpCompanyName-ApiProject-56C2EF2F-ABD6-4EFC-AAF2-2E81C34E8FB1</UserSecretsId>
     <RootNamespace>ApiProject</RootNamespace>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <NoWarn>1701;1702;1591</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <NoWarn>1701;1702;1591</NoWarn>
-  </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="Localization\SourceFiles\*.xml" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
   </ItemGroup>
@@ -24,10 +18,5 @@
     <PackageReference Include="Abp.AutoMapper" Version="7.3.0" />
     <PackageReference Include="Abp.ZeroCore.EntityFrameworkCore" Version="7.3.0" />
     <PackageReference Include="Castle.Windsor.MsDependencyInjection" Version="3.4.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Aggregate\" />
-    <Folder Include="UL\" />
-    <Folder Include="ObjectValues\" />
   </ItemGroup>
 </Project>

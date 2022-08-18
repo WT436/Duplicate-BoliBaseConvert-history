@@ -23,6 +23,7 @@ using System.IO;
 using Microsoft.EntityFrameworkCore;
 using ApiProject.EntityFrameworkCore;
 using UnitOfWork;
+using ApiProject.Web.Host.FilterAttributeCore.ActionFilters;
 
 namespace ApiProject.Web.Host.Startup
 {
@@ -45,7 +46,11 @@ namespace ApiProject.Web.Host.Startup
         {
             //MVC
             services.AddControllersWithViews(
-                options => { options.Filters.Add(new AbpAutoValidateAntiforgeryTokenAttribute()); }
+                options => { 
+                    options.Filters.Add(new AbpAutoValidateAntiforgeryTokenAttribute()); 
+                    options.Filters.Add(new ModelValidationFilterAttribute());
+                    options.Filters.Add(new GateActionFilter());
+                }
             ).AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ContractResolver = new AbpMvcContractResolver(IocManager.Instance)
@@ -111,7 +116,6 @@ namespace ApiProject.Web.Host.Startup
 
             app.UseAbpRequestLocalization();
 
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<AbpCommonHub>("/signalr");
@@ -125,6 +129,9 @@ namespace ApiProject.Web.Host.Startup
             // Enable middleware to serve swagger-ui assets (HTML, JS, CSS etc.)
             app.UseSwaggerUI(options =>
             {
+                options.EnableDeepLinking();
+                options.DocExpansion(docExpansion: Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
+                options.DefaultModelsExpandDepth(-1);
                 // specifying the Swagger JSON endpoint.
                 options.SwaggerEndpoint($"/swagger/{_apiVersion}/swagger.json", $"ApiProject API {_apiVersion}");
                 options.IndexStream = () => Assembly.GetExecutingAssembly()
@@ -132,7 +139,7 @@ namespace ApiProject.Web.Host.Startup
                 options.DisplayRequestDuration(); // Controls the display of the request duration (in milliseconds) for "Try it out" requests.  
             }); // URL: /swagger
         }
-        
+
         private void ConfigureSwagger(IServiceCollection services)
         {
             services.AddSwaggerGen(options =>
@@ -155,6 +162,7 @@ namespace ApiProject.Web.Host.Startup
                         Url = new Uri("https://github.com/aspnetboilerplate/aspnetboilerplate/blob/dev/LICENSE"),
                     }
                 });
+
                 options.DocInclusionPredicate((docName, description) => true);
 
                 // Define the BearerAuth scheme that's in use

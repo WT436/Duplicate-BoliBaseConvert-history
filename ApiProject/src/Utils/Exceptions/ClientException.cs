@@ -51,5 +51,11 @@ namespace Utils.Exceptions
             errorCode = 400;
             _Message = @$"{{{field} : {content}}}";
         }
+
+        public ClientException(int errorcode, string field, string content)
+        {
+            errorCode = errorcode;
+            _Message = @$"{{{field} : {content}}}";
+        }
     }
 }

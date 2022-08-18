@@ -59,8 +59,8 @@ http.interceptors.response.use(
         description: error.response.data.error.details,
         placement: 'bottomRight'
       });
-    } else if (!!error.response 
-      && !!error.response.data.error 
+    } else if (!!error.response
+      && !!error.response.data.error
       && !!error.response.data.error.message) {
       localStorage.setItem("request-err", error.response.data.error.message);
       notification.error({

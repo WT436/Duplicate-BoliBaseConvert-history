@@ -3,7 +3,7 @@ using Abp.Zero.EntityFrameworkCore;
 using ApiProject.Authorization.Roles;
 using ApiProject.Authorization.Users;
 using ApiProject.MultiTenancy;
-using ApiProject.Entitys;
+using ApiProject.Shared.Entitys;
 
 namespace ApiProject.EntityFrameworkCore
 {
