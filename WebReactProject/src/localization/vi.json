@@ -1,0 +1,71 @@
+{
+    "COMMON": {
+        "REFRESH": "Làm Mới",
+        "DELETE": "Xóa",
+        "CHANGE": "Thay đổi",
+        "REPORT_FILE": "Trích xuất file",
+        "EXCEL": "File ExCel",
+        "PDF": "File PDF",
+        "ALL": "Tất Cả",
+        "SELECT": "Lựa chọn",
+        "ADD": "Thêm",
+        "EDIT": "Chỉnh sửa",
+        "SEARCH_BUTTON": "Tìm Kiếm",
+        "OK": "Đồng ý",
+        "CANCEL": "Hủy",
+        "ACTION": "Hành động",
+        "SEARCH_INPUT":"Nhập để tìm kiếm",
+        "WANNING_PROCESSS_DELETE": "Bạn có muốn xóa dữ liệu!",
+        "CONTENT_PROCESSS_DELETE": "Dữ liệu bị xóa sẽ không thể khôi phục lại. Bấm 'Đồng ý' để tiếp tục.",
+        "WANNING_EDIT": "Bạn có muốn thay đổi dữ liệu",
+        "CONTENT_EDIT": "Bạn có muốn thay đổi dữ liệu. Bấm 'Đồng ý' để tiếp tục.",
+        "NOT_NULL": "Không để trống trường hợp này",
+        "CONTENT_CANCEL_EDIT": "Thông tin bạn sửa đổi sẽ không được lưu lại!"
+    },
+    "admin": {
+        "DashboardScreen": {
+            "Filter": "Quote #, Company, Project or City. Example: 30231",
+            "Table": {
+                "By": "By",
+                "Infomation": "Infomation",
+                "Notes": "Notes",
+                "QuoteNumber": "Quote #"
+            }
+        },
+        "Common": {
+            "AppName": "WT436.developer@gmailcom.vn",
+            "CommonErr": "Something wrong!",
+            "DataUpdated": "Data updated!",
+            "Error": "Error",
+            "FooterInfo": "WT436.developer@gmailcom.VN © 2021",
+            "LoginFailed": "Login failed!",
+            "NoData": "No Data",
+            "RequiredFieldsMustNotBeBlank": "Required fields must not be blank!",
+            "Success": "Success!",
+            "ThisFieldIsRequired": "This field is required",
+            "UnknownError": "Unknown error!",
+            "Warning": "Warning"
+        },
+        "LoginScreen": {
+            "LogIn": "Log in",
+            "Password": "Password",
+            "UserName": "User name",
+            "WellcomeMessage": "Welcome!"
+        },
+        "Menu": {
+            "Dashboard": "Home",
+            "Logout": "Logout"
+        }
+    },
+    "CONST_TYPE_ATOMIC": {
+        "key": "Khóa",
+        "name": "Tên",
+        "typesRsc": "Kiểu",
+        "description": "Chi tiết",
+        "isActived": "Trạng thái",
+        "createByName": "Người tạo",
+        "createdOnUtc": "Ngày tạo",
+        "updateByName": "Người cập nhật",
+        "updatedOnUtc": "Ngày cập nhật"
+    }
+}

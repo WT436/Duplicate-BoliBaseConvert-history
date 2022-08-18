@@ -25,9 +25,8 @@ namespace ApiProject.MyApi
         {
             var data = unitOfWork.FromSql("SELECT Name FROM ProcessDb.dbo.AbpTenants");
             IQueryable<DemoProductCategorys> users = unitOfWork.GetRepository<DemoProductCategorys>().GetAll();
-            unitOfWork.GetRepository<DemoProductCategorys>().Insert(new DemoProductCategorys { Name = "cmn", Active = true });
-            unitOfWork.SaveChanges();
-            throw new Exception();
+            //unitOfWork.GetRepository<DemoProductCategorys>().Insert(new DemoProductCategorys { Name = "cmn", Active = true });
+            //unitOfWork.SaveChanges();
             return new OkObjectResult(users.ToList());
         }
     }
