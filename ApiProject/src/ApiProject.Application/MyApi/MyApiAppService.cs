@@ -1,7 +1,7 @@
 ﻿using Abp.Web.Models;
 using ApiProject.EntityFrameworkCore;
-using ApiProject.Entitys;
 using ApiProject.MyApi.Dto;
+using ApiProject.Shared.Entitys;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;

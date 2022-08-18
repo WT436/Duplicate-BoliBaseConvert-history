@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApiProject.Entitys
+namespace ApiProject.Shared.Entitys
 {
     [Table("DemoProductCategorys")]
     public class DemoProductCategorys : Entity<int>
