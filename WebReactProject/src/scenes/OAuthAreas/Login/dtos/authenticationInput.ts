@@ -1,4 +1,4 @@
 export interface AuthenticationInput {
-    UserName: string;
-    Password: string;
+    password: string;
+    usernameOrEmailAddress: string;
 }

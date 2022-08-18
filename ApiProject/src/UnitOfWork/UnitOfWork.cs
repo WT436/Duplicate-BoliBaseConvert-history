@@ -279,6 +279,68 @@ namespace UnitOfWork
             }
         }
 
+        public List<TEntity> FromSqlPageList<TEntity>(string sql, string orderBy, out int totalCount, int pageIndex, int pageSize) where TEntity : class, new()
+        {
+            using (var command = _context.Database.GetDbConnection().CreateCommand())
+            {
+                _context.Database.OpenConnection();
+
+                command.CommandText = $"SELECT COUNT(*) FROM ({sql}) AS total";
+                command.CommandType = CommandType.Text;
+
+                using (var reader = command.ExecuteReader())
+                {
+                    int total = 0;
+                    while (reader.Read())
+                    {
+                        total = reader.IsDBNull(0) ? 0 : Convert.ToInt32(reader[0]);
+                    }
+
+                    totalCount = total;
+                }
+
+                if (sql.ToUpper().Contains("ORDER BY".ToUpper()))
+                {
+                    command.CommandText = $"{sql} OFFSET ({pageIndex} - 1) * {pageSize} ROWS FETCH NEXT {pageSize} ROWS ONLY";
+                }
+                else
+                {
+                    command.CommandText = $"({sql}) ORDER BY {orderBy} OFFSET ({pageIndex} - 1) * {pageSize} ROWS FETCH NEXT {pageSize} ROWS ONLY";
+                }
+
+                command.CommandType = CommandType.Text;
+
+                using (var reader = command.ExecuteReader())
+                {
+                    var lst = new List<TEntity>();
+                    var lstColumns = new TEntity().GetType()
+                                                  .GetProperties(BindingFlags.DeclaredOnly |
+                                                                 BindingFlags.Instance |
+                                                                 BindingFlags.Public |
+                                                                 BindingFlags.NonPublic)
+                                                  .ToList();
+                    while (reader.Read())
+                    {
+                        var newObject = new TEntity();
+                        for (var i = 0; i < reader.FieldCount; i++)
+                        {
+                            var name = reader.GetName(i);
+                            PropertyInfo prop = lstColumns.FirstOrDefault(a => a.Name.ToLower().Equals(name.ToLower()));
+                            if (prop == null)
+                            {
+                                continue;
+                            }
+                            var val = reader.IsDBNull(i) ? null : reader[i];
+                            prop.SetValue(newObject, val, null);
+                        }
+                        lst.Add(newObject);
+                    }
+
+                    return lst;
+                }
+            }
+        }
+
         #endregion access method
     }
 }

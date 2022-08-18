@@ -1,6 +1,6 @@
 var abp = abp || {};
 (function() {
-    abp.appServiceUrl = "https://localhost:44363/v1/api";
+    abp.appServiceUrl = "https://localhost:44311";
     /* Application paths *****************************************/
 
     //Current application root path (including virtual directory if exists).
