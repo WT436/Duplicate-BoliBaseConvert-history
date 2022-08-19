@@ -19,7 +19,7 @@ const http = axios.create({
 http.interceptors.request.use(
   function (config) {
     if (!!abp.auth.getToken()) {
-      config.headers.common['Authorization'] = abp.auth.getToken();
+      config.headers.common['authorization'] ="Bearer  " + abp.auth.getToken();
     }
     return config;
   },
@@ -35,7 +35,6 @@ http.interceptors.response.use(
   },
 
   error => {
-
     if (typeof error.response !== "undefined"
       && typeof error.response.config !== "undefined"
       && typeof error.response.config.url !== "undefined") {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApiProject.Anonymous.Dto
+namespace ApiProject.Anonymous.Tenant.Dto
 {
     public class TenantCommonDto
     {

@@ -21,9 +21,9 @@ export const adminRouters: any = [
     component: LoadableComponent(() => import("../../scenes/AdminAreas/MenuSetting"))
   },
   {
-    path: "/admin/atomic-resource",
-    exact: true,
-    component: LoadableComponent(() => import("../../scenes/OAuthAreas/Permission/AtomicResource"))
+    path: "/admin/phan-he",
+    exact: false,
+    component: LoadableComponent(() => import("../../scenes/OAuthAreas/Permission/Tenant"))
   },
   {
     path: "/admin/role-permission",

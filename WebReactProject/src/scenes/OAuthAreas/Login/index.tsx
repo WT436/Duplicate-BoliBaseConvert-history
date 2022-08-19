@@ -16,13 +16,7 @@ export default function Login(props: ILoginProps) {
 
     const [scren, setscren] = useState<HTMLElement>();
 
-    useEffect(() => {
-        console.log('props.location', props.location)
-    }, [])
-
-
     const _renderScenesLogin = () => {
-        console.log('props.location', props.location)
         switch (props.location.pathname) {
             case '/change-password':
                 return <ChangePassword location={props.location} />;

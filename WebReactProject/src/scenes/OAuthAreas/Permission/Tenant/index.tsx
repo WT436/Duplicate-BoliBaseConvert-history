@@ -61,21 +61,6 @@ export default function AtomicResource(props: IAtomicResourceProps) {
     //#region RESTART
     const fetdataSearch = () => {
         setloadingTable(true);
-        services.resourceRead({
-            propertySearch: [0],
-            valuesSearch: [search ?? ''],
-            propertyOrder: 0,
-            valueOrderBy: 1,
-            pageIndex: pageIndex,
-            pageSize: pageSize,
-        })
-            .then(re => {
-                setdata(re.data.result.items);
-                settotalCount(re.data.result.totalCount);
-                setloadingTable(false);
-                setpageSize(re.data.result.pageSize);
-            })
-            .catch(er => { setloadingTable(false); });
     }
 
     const _restartData = () => {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -49,13 +50,13 @@ namespace Utils.Exceptions
         public ClientException(string field, string content)
         {
             errorCode = 400;
-            _Message = @$"{{{field} : {content}}}";
+            _Message = JsonConvert.SerializeObject(new { field = field, content = content });
         }
 
         public ClientException(int errorcode, string field, string content)
         {
             errorCode = errorcode;
-            _Message = @$"{{{field} : {content}}}";
+            _Message = JsonConvert.SerializeObject(new { field = field, content = content });
         }
     }
 }

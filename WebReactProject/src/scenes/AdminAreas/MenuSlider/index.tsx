@@ -45,7 +45,7 @@ export default function MenuSlider(props: IMenuSliderAdminProps) {
           <Menu.SubMenu key="menu9999" icon={<SettingOutlined />} title="Cài Đặt">
             <Menu.SubMenu key="menu9999.1" title="Phân quyền">
               <Menu.Item key="menu9999.1.1">
-                <Link to="/admin/atomic-resource">Nguồn</Link>
+                <Link to="/admin/phan-he">Phân hệ</Link>
               </Menu.Item>
               <Menu.Item key="menu9999.1.2">
                 <Link to="/admin/role-permission">Vai trò</Link>

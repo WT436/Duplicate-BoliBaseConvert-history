@@ -1,5 +1,6 @@
 export interface AuthenticationResult {
     accessToken: string;
-    duoSigReq: string;
-    duoHost: string;
+    encryptedAccessToken: string;
+    expireInSeconds: number
+    userId: number
 }

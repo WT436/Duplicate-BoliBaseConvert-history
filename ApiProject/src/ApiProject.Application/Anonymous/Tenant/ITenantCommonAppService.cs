@@ -1,10 +1,10 @@
 ﻿using Abp.Application.Services;
-using ApiProject.Anonymous.Dto;
+using ApiProject.Anonymous.Tenant.Dto;
 using ApiProject.Shared.Common;
 using System.Threading.Tasks;
 using UnitOfWork.Collections;
 
-namespace ApiProject.Anonymous
+namespace ApiProject.Anonymous.Tenant
 {
     public interface ITenantCommonAppService : IApplicationService
     {

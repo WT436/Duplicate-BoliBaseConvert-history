@@ -25,6 +25,7 @@ namespace UnitOfWork
         IQueryable<TEntity> FromSql<TEntity>(string sql, params object[] parameters) where TEntity : class;
         List<TEntity> FromSql<TEntity>(string sql) where TEntity : class, new();
         List<TEntity> FromSqlPageList<TEntity>(string sql, string orderBy, out int totalCount, int pageIndex, int pageSize) where TEntity : class, new();
+        Task<Tuple<int, List<TEntity>>> FromSqlPageListAsync<TEntity>(string sql, string orderBy, int pageIndex, int pageSize) where TEntity : class, new();
         string FromSql(string sql);
         Task<string> FromSqlJsonAsync(string sql);
         Task<List<TEntity>> FromSqlAsync<TEntity>(string sql) where TEntity : class, new();

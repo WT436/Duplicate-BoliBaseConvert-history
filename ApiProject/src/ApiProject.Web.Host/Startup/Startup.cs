@@ -57,6 +57,8 @@ namespace ApiProject.Web.Host.Startup
                 {
                     NamingStrategy = new CamelCaseNamingStrategy()
                 };
+
+                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
 
             IdentityRegistrar.Register(services);
@@ -100,6 +102,7 @@ namespace ApiProject.Web.Host.Startup
             {
                 opt.UseSqlServer(_appConfiguration["ConnectionStrings:Default"]);
             }).AddUnitOfWork<ApiProjectDbContext>();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)

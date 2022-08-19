@@ -3,11 +3,15 @@ import { Button, Checkbox, Col, Divider, Input, Select } from 'antd';
 import { L } from "../../../../lib/abpUtility";
 import Form from 'antd/lib/form';
 import '../style.css'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import service from '../services'
 import Authv2Component from './authv2Component';
+import { TenantCommonDto } from '../dtos/tenantRep';
+import { notifyError } from '../../../../components/Common/notification';
+import { ToClientException } from '../../../../services/dto/clientExceptionDto';
 
 const { Option } = Select;
+declare var abp: any;
 //const key = 'login';
 
 export interface ISigninProps {
@@ -17,11 +21,61 @@ export interface ISigninProps {
 export default function Signin(props: ISigninProps) {
 
     const [loadding, setloadding] = useState<boolean>(false);
+    const [tenantCommon, settenantCommon] = useState<TenantCommonDto[]>([]);
+
+    const _fetchData = async () => {
+
+        let result = await service.loadTenant({
+            propertySearch: [],
+            valuesSearch: [],
+            propertyOrder: undefined,
+            valueOrderBy: true,
+            pageIndex: 1,
+            pageSize: 20
+        });
+
+        console.log('result :>> ', result);
+
+        if (result && !result.error) {
+            settenantCommon(result.result?.items);
+        }
+        else {
+            let errorMessage = ToClientException(result.messageError);
+            notifyError("Đã sảy ra lỗi nội bộ", errorMessage.content);
+        }
+    }
+
+    useEffect(() => {
+        _fetchData();
+    }, [])
 
     const onFinish = async (values: any) => {
         setloadding(true);
-        let checktoken = await service.isTenantAvailable({ tenancyName: "Default" });
-        console.log('Success:', checktoken);
+        let checktoken = await service.isTenantAvailable({ tenancyName: values.tenant });
+        if (checktoken && !checktoken.error) {
+            abp.multiTenancy.setTenantIdCookie(checktoken.result.tenantId);
+            let dataAuth = await service.loggin(
+                {
+                    usernameOrEmailAddress: values.username,
+                    password: values.password
+                },
+                checktoken.result.tenantId);
+
+            if (dataAuth && !dataAuth.error) {
+                console.log('dataAuth :>> ', dataAuth);
+                // cấu hình token
+                abp.auth.setToken(dataAuth.result.accessToken);
+                // cấu hình access token
+            }
+            else {
+                notifyError("Cảnh Báo", "Thông tin tài khoản mật khẩu không chính xác!");
+            }
+        }
+        else {
+            notifyError("Cảnh Báo", checktoken?.messageError);
+        }
+
+        await service.authenticate(undefined);
         setloadding(false);
     };
 
@@ -64,12 +118,10 @@ export default function Signin(props: ISigninProps) {
                                 .localeCompare((optionB!.children as unknown as string).toLowerCase())
                         }
                     >
-                        <Option value="1">Not Identified</Option>
-                        <Option value="2">Closed</Option>
-                        <Option value="3">Communicated</Option>
-                        <Option value="4">Identified</Option>
-                        <Option value="5">Resolved</Option>
-                        <Option value="6">Cancelled</Option>
+                        {tenantCommon
+                            ? tenantCommon.map((m) => (<Option key={m.name} value={m.name}>{m.tenancyName}</Option>))
+                            : <></>
+                        }
                     </Select>
                 </Form.Item>
                 <Form.Item

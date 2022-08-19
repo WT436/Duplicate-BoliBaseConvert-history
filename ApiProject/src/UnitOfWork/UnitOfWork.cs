@@ -341,6 +341,70 @@ namespace UnitOfWork
             }
         }
 
+        public async Task<Tuple<int, List<TEntity>>> FromSqlPageListAsync<TEntity>(string sql, string orderBy, int pageIndex, int pageSize) where TEntity : class, new()
+        {
+            int totalCount = 0;
+
+            using (var command = _context.Database.GetDbConnection().CreateCommand())
+            {
+                await _context.Database.OpenConnectionAsync();
+
+                command.CommandText = $"SELECT COUNT(*) FROM ({sql}) AS total";
+                command.CommandType = CommandType.Text;
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    int total = 0;
+                    while (await reader.ReadAsync())
+                    {
+                        total = reader.IsDBNull(0) ? 0 : Convert.ToInt32(reader[0]);
+                    }
+
+                    totalCount = total;
+                }
+
+                if (sql.ToUpper().Contains("ORDER BY".ToUpper()))
+                {
+                    command.CommandText = $"{sql} OFFSET ({pageIndex} - 1) * {pageSize} ROWS FETCH NEXT {pageSize} ROWS ONLY";
+                }
+                else
+                {
+                    command.CommandText = $"({sql}) ORDER BY {orderBy} OFFSET ({pageIndex} - 1) * {pageSize} ROWS FETCH NEXT {pageSize} ROWS ONLY";
+                }
+
+                command.CommandType = CommandType.Text;
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    var lst = new List<TEntity>();
+                    var lstColumns = new TEntity().GetType()
+                                                  .GetProperties(BindingFlags.DeclaredOnly |
+                                                                 BindingFlags.Instance |
+                                                                 BindingFlags.Public |
+                                                                 BindingFlags.NonPublic)
+                                                  .ToList();
+                    while (await reader.ReadAsync())
+                    {
+                        var newObject = new TEntity();
+                        for (var i = 0; i < reader.FieldCount; i++)
+                        {
+                            var name = reader.GetName(i);
+                            PropertyInfo prop = lstColumns.FirstOrDefault(a => a.Name.ToLower().Equals(name.ToLower()));
+                            if (prop == null)
+                            {
+                                continue;
+                            }
+                            var val = reader.IsDBNull(i) ? null : reader[i];
+                            prop.SetValue(newObject, val, null);
+                        }
+                        lst.Add(newObject);
+                    }
+
+                    return new Tuple<int, List<TEntity>>(totalCount, lst);
+                }
+            }
+        }
+
         #endregion access method
     }
 }
