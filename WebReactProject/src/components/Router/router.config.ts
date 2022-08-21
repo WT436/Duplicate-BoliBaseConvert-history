@@ -23,7 +23,12 @@ export const adminRouters: any = [
   {
     path: "/admin/phan-he",
     exact: false,
-    component: LoadableComponent(() => import("../../scenes/OAuthAreas/Permission/Tenant"))
+    component: LoadableComponent(() => import("../../scenes/OAuthAreas/Permission/TenantAdministrator"))
+  },
+  {
+    path: "/admin/role-internal",
+    exact: true,
+    component: LoadableComponent(() => import("../../scenes/OAuthAreas/Permission/RoleInternal"))
   },
   {
     path: "/admin/role-permission",

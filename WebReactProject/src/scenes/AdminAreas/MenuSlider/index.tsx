@@ -48,22 +48,22 @@ export default function MenuSlider(props: IMenuSliderAdminProps) {
                 <Link to="/admin/phan-he">Phân hệ</Link>
               </Menu.Item>
               <Menu.Item key="menu9999.1.2">
-                <Link to="/admin/role-permission">Vai trò</Link>
+                <Link to="/admin/role-permission">Vai trò phân hệ</Link>
               </Menu.Item>
               <Menu.Item key="menu9999.1.3">
-                <Link to="/admin/setting-role-basic">Người dùng</Link>
+                <Link to="/admin/setting-role-basic">Người dùng phân hệ</Link>
               </Menu.Item>
               <Menu.Item key="menu9999.1.4">
-                <Link to="/admin/setting-role">Nhóm</Link>
+                <Link to="/admin/setting-role">Nhóm Phân hệ</Link>
               </Menu.Item>
               <Menu.Item key="menu9999.1.5">
-                <Link to="/admin/setting-role">s</Link>
+                <Link to="/admin/role-internal">Vai trò Nội bộ</Link>
               </Menu.Item>
               <Menu.Item key="menu9999.1.6">
-                <Link to="/admin/setting-role"></Link>
+                <Link to="/admin/setting-role">Người dùng nội bộ</Link>
               </Menu.Item>
               <Menu.Item key="menu9999.1.7">
-                <Link to="/admin/setting-role"></Link>
+                <Link to="/admin/setting-role">Nhóm nội bộ</Link>
               </Menu.Item>
             </Menu.SubMenu>
             <Menu.SubMenu key="menu9999.2" title="Menu">

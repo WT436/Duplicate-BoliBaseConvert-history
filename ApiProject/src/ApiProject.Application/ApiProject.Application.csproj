@@ -27,5 +27,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Anonymous\Tenant\Dto\" />
+    <Folder Include="PermissionService\Dto\" />
+    <Folder Include="Roles\RoleTenant\" />
   </ItemGroup>
 </Project>

@@ -21,13 +21,13 @@ const { Option } = Select;
 declare var abp: any;
 //#endregion
 
-export interface ITenantProps {
+export interface ITenantAdministrator {
     location: any;
 }
 
 const LocationKey = "CONST_TYPE_ATOMIC";
 
-export default function Tenant(props: ITenantProps) {
+export default function TenantAdministrator(props: ITenantAdministrator) {
 
     //#region START
     const [pageSize, setpageSize] = useState<number>(20);
@@ -80,7 +80,7 @@ export default function Tenant(props: ITenantProps) {
 
     const _restartData = () => {
         setdata([]);
-        setvalueSearch(undefined);
+        setvalueSearch([]);
         settotalCount(0);
         setloadingTable(false);
         setpageIndex(1);
@@ -240,7 +240,7 @@ export default function Tenant(props: ITenantProps) {
     const _searchDataOnClick = (page: number, pageSize: number) => {
         setpageSize(pageSize);
         setpageIndex(page);
-    }
+    };
 
     var timeout: any = 0;
     const _onchangeInput = (text: any) => {
@@ -250,7 +250,7 @@ export default function Tenant(props: ITenantProps) {
         timeout = setTimeout(function () {
             setvalueSearch(text.target.value);
         }, 500)
-    }
+    };
 
     const _selectFileExport = (value: any) => {
     }
