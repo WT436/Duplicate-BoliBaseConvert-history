@@ -22,19 +22,18 @@ export default function Signin(props: ISigninProps) {
 
     const [loadding, setloadding] = useState<boolean>(false);
     const [tenantCommon, settenantCommon] = useState<TenantCommonDto[]>([]);
+    const [valueSearch, setvalueSearch] = useState<string[] | undefined>(undefined);
 
     const _fetchData = async () => {
 
         let result = await service.loadTenant({
             propertySearch: [],
-            valuesSearch: [],
+            valuesSearch: valueSearch,
             propertyOrder: undefined,
             valueOrderBy: true,
             pageIndex: 1,
-            pageSize: 20
+            pageSize: 10
         });
-
-        console.log('result :>> ', result);
 
         if (result && !result.error) {
             settenantCommon(result.result?.items);
@@ -49,6 +48,10 @@ export default function Signin(props: ISigninProps) {
         _fetchData();
     }, [])
 
+    useEffect(()=>{
+        _fetchData();
+    },[valueSearch]);
+
     const onFinish = async (values: any) => {
         setloadding(true);
         let checktoken = await service.isTenantAvailable({ tenancyName: values.tenant });
@@ -62,10 +65,7 @@ export default function Signin(props: ISigninProps) {
                 checktoken.result.tenantId);
 
             if (dataAuth && !dataAuth.error) {
-                console.log('dataAuth :>> ', dataAuth);
-                // cấu hình token
                 abp.auth.setToken(dataAuth.result.accessToken);
-                // cấu hình access token
             }
             else {
                 notifyError("Cảnh Báo", "Thông tin tài khoản mật khẩu không chính xác!");
@@ -79,8 +79,17 @@ export default function Signin(props: ISigninProps) {
         setloadding(false);
     };
 
+    var timeout: any = 0;
+    const onSearch = (value: string) => {
+        if (timeout) {
+            clearTimeout(timeout);
+        }
+        timeout = setTimeout(function () {
+            setvalueSearch([value]);
+        }, 500);
+    };
+
     const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
     };
 
     return (
@@ -109,9 +118,10 @@ export default function Signin(props: ISigninProps) {
                     <Select
                         showSearch
                         style={{ width: '100%' }}
-                        placeholder={L("Lựa chọn phân hệ", "COMMON")}
+                        placeholder={L("Tìm kiếm và lựa chọn phân hệ", "COMMON")}
                         optionFilterProp="children"
-                        filterOption={(input, option) => (option!.children as unknown as string).includes(input)}
+                        onSearch={onSearch}
+                        //filterOption={(input, option) => (option!.children as unknown as string).includes(input)}
                         filterSort={(optionA, optionB) =>
                             (optionA!.children as unknown as string)
                                 .toLowerCase()
@@ -119,7 +129,7 @@ export default function Signin(props: ISigninProps) {
                         }
                     >
                         {tenantCommon
-                            ? tenantCommon.map((m) => (<Option key={m.name} value={m.name}>{m.tenancyName}</Option>))
+                            ? tenantCommon.map((m) => (<Option key={m.tenancyName} value={m.tenancyName}>{m.name}</Option>))
                             : <></>
                         }
                     </Select>

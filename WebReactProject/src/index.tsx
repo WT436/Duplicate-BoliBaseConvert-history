@@ -1,5 +1,4 @@
 import './index.css';
-
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as moment from 'moment';
@@ -20,16 +19,17 @@ Utils.setLocalization();
 abpLocalizationConfigService.getLocalization().then(async function (res) {
     Utils.extend(true, abp, defaultConfig);
     if (!!abp.auth.getToken()) {
-        let checktoken = await service.checkToken(abp.auth.getToken());
-        if (checktoken) {
-            abp.session.userId = checktoken.userId;
-            abp.auth.setRoles(checktoken.roleList, undefined);
-        }
-        else {
-            localStorage.clear();
-            sessionStorage.clear();
-            abp.auth.clearToken();
-        }
+        //let checktoken = await service.checkToken(abp.auth.getToken());
+        // console.log('checktoken', checktoken)
+        // if (checktoken) {
+        //     abp.session.userId = checktoken.userId;
+        //     abp.auth.setRoles(checktoken.roleList, undefined);
+        // }
+        // else {
+        //     // localStorage.clear();
+        //     // sessionStorage.clear();
+        //     // abp.auth.clearToken();
+        // }
     }
 
     var loadingEl = document.getElementById('root-loading');

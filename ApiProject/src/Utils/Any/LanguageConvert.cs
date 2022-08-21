@@ -5,9 +5,9 @@ using System.Text.RegularExpressions;
 
 namespace Utils.Any
 {
-    public class LanguageConvert
+    public static class LanguageConvert
     {
-        public unsafe static string ConvertVietNamese(string text)
+        public unsafe static string ConvertVietNamese(this string text)
         {
             string[] pattern = new string[7];
             char[] replaceChar = new char[14];
@@ -50,6 +50,11 @@ namespace Utils.Any
                 }
             }
             return text;
+        }
+
+        public unsafe static string FromViToConst(this string text)
+        {
+           return ConvertVietNamese(text).Replace(" ","_").ToUpper();
         }
     }
 }

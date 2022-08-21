@@ -23,11 +23,9 @@ export default function ForgotPassword(props: IForgotPasswordProps) {
             setloadding(false);
             confirm();
         }, 5000);
-        console.log('Success:', values);
     };
 
     const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
     };
     const confirm = () => {
         Modal.confirm({

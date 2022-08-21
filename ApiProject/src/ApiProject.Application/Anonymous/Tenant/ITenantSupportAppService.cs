@@ -6,7 +6,7 @@ using UnitOfWork.Collections;
 
 namespace ApiProject.Anonymous.Tenant
 {
-    public interface ITenantCommonAppService : IApplicationService
+    public interface ITenantSupportAppService : IApplicationService
     {
         Task<IPagedList<TenantCommonDto>> GetAll(SearchRequest input);
     }

@@ -1,11 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using Utils.Any;
+using static ApiProject.ObjectValues.ERROR_DATA;
 
 namespace ApiProject.MultiTenancy.Dto
 {
+    public class TenantUpdateDto : TenantInsertDto
+    {
+        [Required(ErrorMessage = NOT_NULL)]
+        public int Id { get; set; }
+    }
+
+    public class TenantInsertDto
+    {
+        [Required(ErrorMessage = NOT_NULL)]
+        [RegularExpression(RegexProcess.NAME_VN, ErrorMessage = SPECIAL_CHARACTERS)]
+        [MaxLength(64, ErrorMessage = MAX_LENGTH)]
+        public string Name { get; set; }
+        public bool IsDeleted { get; set; }
+        public bool IsActive { get; set; }
+    }
+
     public class TenantBasicDto
     {
         public int Id { get; set; }
@@ -14,8 +29,8 @@ namespace ApiProject.MultiTenancy.Dto
         public string ConnectionString { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsActive { get; set; }
-        public int LastModifierUserId { get; set; }
-        public int LastModifierUserName { get; set; }
+        public Int64 LastModifierUserId { get; set; }
+        public string LastModifierUserName { get; set; }
         public DateTime LastModificationTime { get; set; }
     }
 

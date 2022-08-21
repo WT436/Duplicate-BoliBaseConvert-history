@@ -20,12 +20,10 @@ export default function Signup(props: ISignupProps) {
         setloadding(true);
         setTimeout(function () { //Start the timer
             setloadding(false);
-        }, 5000)
-        console.log('Success:', values);
+        }, 5000);
     };
 
     const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
     };
 
     return (

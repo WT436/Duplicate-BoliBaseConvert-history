@@ -20,7 +20,6 @@ export default function Dashboard(props: IDashboardProps) {
     };
 
     const handleSubmission = async () => {
-        console.log(selectedFile);
         if (selectedFile !== undefined)
             await sevice.checkToken(selectedFile);
     };

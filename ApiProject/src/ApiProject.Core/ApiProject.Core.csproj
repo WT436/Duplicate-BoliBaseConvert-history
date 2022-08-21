@@ -28,6 +28,5 @@
   <ItemGroup>
     <Folder Include="Aggregate\" />
     <Folder Include="UL\" />
-    <Folder Include="ObjectValues\" />
   </ItemGroup>
 </Project>

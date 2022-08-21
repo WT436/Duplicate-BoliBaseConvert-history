@@ -11,7 +11,7 @@ import { notifyError } from '../../../components/Common/notification';
 class LoginService {
     public async loadTenant(input: SearchRequest)
         : Promise<ResponsesResource<PagedResultDto<TenantCommonDto>>> {
-        let rs = await http.get('/api/v1/TenantCommon/GetAll',
+        let rs = await http.get('/api/v1/TenantSupport/GetAll',
             {
                 params: {
                     propertySearch: input.propertySearch,
@@ -53,7 +53,6 @@ class LoginService {
     public async authenticate(input: AuthenticationInput | undefined)
         : Promise<AuthenticationResult> {
         let rs = await http.get('/api/services/app/User/GetAll');
-        console.log('rs', rs);
         return rs ? rs.data.result : rs;
     }
 

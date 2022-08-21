@@ -29,6 +29,7 @@ namespace UnitOfWork
         string FromSql(string sql);
         Task<string> FromSqlJsonAsync(string sql);
         Task<List<TEntity>> FromSqlAsync<TEntity>(string sql) where TEntity : class, new();
+        Task<DateTime> GetDateTime();
         void TrackGraph(object rootEntity, Action<EntityEntryGraphNode> callback);
         void RollBack();
     }

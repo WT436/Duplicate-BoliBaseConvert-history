@@ -349,15 +349,24 @@ namespace UnitOfWork
             {
                 await _context.Database.OpenConnectionAsync();
 
-                command.CommandText = $"SELECT COUNT(*) FROM ({sql}) AS total";
+                var anyOrderby = sql.Trim().ToUpper().LastIndexOf("ORDER BY".ToUpper());
+                if (anyOrderby == -1)
+                {
+                    command.CommandText = $"SELECT COUNT(*) FROM ({sql}) AS total";
+                }
+                else
+                {
+                    command.CommandText = $"SELECT COUNT(*) FROM ({sql.Substring(0, sql.ToUpper().LastIndexOf("ORDER BY".ToUpper()))}) AS total";
+                }
+
                 command.CommandType = CommandType.Text;
 
-                using (var reader = await command.ExecuteReaderAsync())
+                using (var readerCount = await command.ExecuteReaderAsync())
                 {
                     int total = 0;
-                    while (await reader.ReadAsync())
+                    while (await readerCount.ReadAsync())
                     {
-                        total = reader.IsDBNull(0) ? 0 : Convert.ToInt32(reader[0]);
+                        total = readerCount.IsDBNull(0) ? 0 : Convert.ToInt32(readerCount[0]);
                     }
 
                     totalCount = total;
@@ -403,6 +412,19 @@ namespace UnitOfWork
                     return new Tuple<int, List<TEntity>>(totalCount, lst);
                 }
             }
+        }
+
+        public async Task<DateTime> GetDateTime()
+        {
+            using (var command = _context.Database.GetDbConnection().CreateCommand())
+            {
+                await _context.Database.OpenConnectionAsync();
+
+                command.CommandText = "SELECT GETDATE()";
+                command.CommandType = CommandType.Text;
+
+                return (DateTime)command.ExecuteScalar();
+            };
         }
 
         #endregion access method

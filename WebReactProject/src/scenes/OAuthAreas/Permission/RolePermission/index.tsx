@@ -463,7 +463,7 @@ export default function AtomicResource(props: IAtomicResourceProps) {
                 key={key}
                 title="Tìm kiếm"
                 show={true}
-                onChange={(value) => { console.log(value); setsearch(false) }} /> */}
+                onChange={(value) => {setsearch(false) }} /> */}
         </>
     )
 };

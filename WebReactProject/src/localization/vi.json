@@ -1,4 +1,18 @@
 {
+    "CONST_TYPE_ATOMIC": {
+        "#":"STT",
+        "id": "Mã",
+        "tenancyName": "Mã phân hệ",
+        "name": "Tên phân hệ",
+        "connectionString":"Đường dẫn",
+        "isDeleted": "Đã xóa",
+        "isActive": "Hoạt động",
+        "lastModifierUserId": "Mã người tạo",
+        "lastModifierUserName":"Tên người cập nhật",
+        "lastModificationTime":"Thời gian cập nhật",
+
+        "nameMaxLength":"Tên không lớn hơn 64 ký tự."
+    },
     "COMMON": {
         "REFRESH": "Làm Mới",
         "DELETE": "Xóa",
@@ -20,7 +34,16 @@
         "WANNING_EDIT": "Bạn có muốn thay đổi dữ liệu",
         "CONTENT_EDIT": "Bạn có muốn thay đổi dữ liệu. Bấm 'Đồng ý' để tiếp tục.",
         "NOT_NULL": "Không để trống trường hợp này",
-        "CONTENT_CANCEL_EDIT": "Thông tin bạn sửa đổi sẽ không được lưu lại!"
+        "CONTENT_CANCEL_EDIT": "Thông tin bạn sửa đổi sẽ không được lưu lại!",
+        "NOT_SPECIAL_CHARACTERS" :"Không chứa ký tự đặc biệt!",
+        "INSERT_SUCCESS": "Thêm mới thành công!",
+        "UPDATE_SUCCESS":"Cập nhật thành công!",
+        "SUCCESS":"Thành công.",
+        "DATA_EXIST": "Dữ liệu đã tồn tại!",
+        "ERROR":"Thất bại.",
+        "UNKNOWN":"Không xác định!",
+        "UNAUTHORIZED": "Dữ liệu không cho phép!",
+        "DATA_NULL":"Dữ liệu không xác định!"
     },
     "admin": {
         "DashboardScreen": {
@@ -56,16 +79,5 @@
             "Dashboard": "Home",
             "Logout": "Logout"
         }
-    },
-    "CONST_TYPE_ATOMIC": {
-        "key": "Khóa",
-        "name": "Tên",
-        "typesRsc": "Kiểu",
-        "description": "Chi tiết",
-        "isActived": "Trạng thái",
-        "createByName": "Người tạo",
-        "createdOnUtc": "Ngày tạo",
-        "updateByName": "Người cập nhật",
-        "updatedOnUtc": "Ngày cập nhật"
     }
 }

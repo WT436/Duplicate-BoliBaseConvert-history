@@ -1,4 +1,4 @@
-.ZrJziiKjUH{
+.ZrJziiKjUH {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -8,9 +8,9 @@
     padding: 0 10px;
 }
 
-.JUVFCIUZTy{
+.JUVFCIUZTy {
     display: flex;
-    flex-direction: row;
+    flex-direction: swap;
     justify-content: space-start;
     align-items: center;
     align-content: center;
@@ -20,29 +20,31 @@
 .ant-btn-block {
     width: auto;
 }
-.kkLwRiTajL{
+
+.kkLwRiTajL {
     margin-left: 16px;
     border-radius: 30px;
     width: 50%;
     max-width: 300px;
 }
-.JUVFCIUZTy>button{
+
+.JUVFCIUZTy>button {
     color: blue;
 }
 
-.SxwSbqQaIf{
+.SxwSbqQaIf {
     width: calc(90%) !important;
 }
 
-.SxwSbqQaIf> .ant-modal-content>.ant-modal-body{
+.SxwSbqQaIf>.ant-modal-content>.ant-modal-body {
     padding: 10px;
 }
 
-.iJftpaETov{
+.iJftpaETov {
     width: calc(50%) !important;
     top: 150px;
 }
 
-.iJftpaETov> .ant-modal-content>.ant-modal-body{
+.iJftpaETov>.ant-modal-content>.ant-modal-body {
     padding: 10px;
 }

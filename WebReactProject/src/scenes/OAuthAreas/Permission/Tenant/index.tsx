@@ -3,101 +3,112 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { L } from "../../../../lib/abpUtility";
 import {
-    Button, Col, Form, Input, Modal, Row, Select, Switch, Table, Tag, Tooltip
+    Button, Col, Form, Input, Modal, Row, Select, Table, Tag, Tooltip
 } from "antd";
 import {
-    DeleteOutlined, EditOutlined, ExclamationCircleOutlined, FilterOutlined, PlusOutlined, RedoOutlined, RetweetOutlined, SearchOutlined, SortAscendingOutlined,
+    DeleteOutlined, EditOutlined, ExclamationCircleOutlined, FilterOutlined, PartitionOutlined, PlusOutlined, RedoOutlined, RetweetOutlined, SearchOutlined, SortAscendingOutlined, UsergroupAddOutlined,
 } from "@ant-design/icons";
 import moment from "moment";
 import utils from "../../../../utils/utils";
 import './style.css'
-import { ReadPageLstResourceDto } from "./dtos/readPageLstResourceDto";
 import services from './services';
-import { TypesRsc } from "./enum/typesRsc";
 import { notifyError } from "../../../../components/Common/notification";
-import useDebounce from "../../../../components/Common/search";
+import { TenantBasicDto } from "./dtos/tenantDto";
+import InsertOrUpdate from "./components/insertOrUpdate";
 
 const { Option } = Select;
 
 declare var abp: any;
 //#endregion
 
-const key = 'AtomicResource';
-
-export interface IAtomicResourceProps {
+export interface ITenantProps {
     location: any;
 }
+
 const LocationKey = "CONST_TYPE_ATOMIC";
 
-let formItemLayout = {
-    labelCol: {
-        xs: { span: 24 },
-        sm: { span: 6 },
-    },
-    wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 18 },
-    },
-};
-
-export default function AtomicResource(props: IAtomicResourceProps) {
+export default function Tenant(props: ITenantProps) {
 
     //#region START
+    const [pageSize, setpageSize] = useState<number>(20);
+    const [pageIndex, setpageIndex] = useState<number>(1);
+    const [totalCount, settotalCount] = useState<number>(0);
+    const [propertySearch, setpropertySearch] = useState<string[] | undefined>(undefined);
+    const [valueSearch, setvalueSearch] = useState<string[] | undefined>(undefined);
+    const [propertyOrder, setpropertyOrder] = useState<string | undefined>();
+    const [valueOrderBy, setvalueOrderBy] = useState<boolean | undefined>(undefined);
+    const [data, setdata] = useState<TenantBasicDto[]>([]);
+
+    const [dataBeginEdit, setdataBeginEdit] = useState<TenantBasicDto | undefined>(undefined);
+    const [onShowModal, setonShowModal] = useState<boolean>(false);
+
     const [loadingAll, setloadingAll] = useState<boolean>(false);
     const [loadingTable, setloadingTable] = useState<boolean>(false);
-    const [pageSize, setpageSize] = useState<number>(0);
-    const [pageIndex, setpageIndex] = useState<number>(0);
-    const [totalCount, settotalCount] = useState<number>(0);
-    const [loadingButton, setloadingButton] = useState<boolean>(false);
-    const [search, setsearch] = useState<string>();
-    const [data, setdata] = useState<ReadPageLstResourceDto[]>([]);
-    const [isModalVisible, setisModalVisible] = useState(false);
-    const [isModalAdd, setisModalAdd] = useState(false);
-    const [dataBeginEdit, setdataBeginEdit] = useState<
-        ReadPageLstResourceDto | undefined
-    >(undefined);
+    const [dataSelectFromTable, setdataSelectFromTable] = useState<React.Key[]>([]);
 
     //#endregion
     //#region RESTART
-    const fetdataSearch = () => {
+    const fetdataSearch = async () => {
         setloadingTable(true);
+
+        let result = await services.GetAllTenant({
+            propertySearch: propertySearch,
+            valuesSearch: valueSearch,
+            propertyOrder: propertyOrder,
+            valueOrderBy: valueOrderBy,
+            pageIndex: pageIndex,
+            pageSize: pageSize
+        });
+
+        if (result && !result.error) {
+            setdata(result.result.items);
+            setpageIndex(result.result.pageIndex);
+            setpageSize(result.result.pageSize);
+            settotalCount(result.result.totalCount);
+        }
+        else {
+
+        }
+
+        setloadingTable(false);
+    }
+
+    const _reloadData = ()=>{
+        setdata([]);
+        fetdataSearch();
     }
 
     const _restartData = () => {
         setdata([]);
-        setsearch('');
+        setvalueSearch(undefined);
         settotalCount(0);
         setloadingTable(false);
+        setpageIndex(1);
         setpageSize(20);
-        fetdataSearch();
     };
     //#endregion
     //#region TABLE
-
     const columns = [
-        {
-            title: L("key", LocationKey),
-            dataIndex: "key",
-        },
         {
             title: L("name", LocationKey),
             dataIndex: "name",
+            key: 'name'
         },
         {
-            title: L("typesRsc", LocationKey),
-            dataIndex: "typesRsc",
-            render: (text: number) => (
-                <Tag color={utils._randomColor(text)}>{TypesRsc[text]}</Tag>
-            ),
+            title: L("connectionString", LocationKey),
+            dataIndex: "connectionString",
+            key: 'connectionString',
+            render: (text: string) =>
+                text ? (
+                    text
+                ) : (
+                    <Tag color={utils._randomColor(1)}>Null</Tag>
+                ),
         },
         {
-            title: L("description", LocationKey),
-            dataIndex: "description",
-        },
-        {
-            title: L("isActived", LocationKey),
-            dataIndex: "isActived",
-            key: "isActived",
+            title: L("isActive", LocationKey),
+            dataIndex: "isActive",
+            key: "isActive",
             render: (text: boolean) =>
                 text === true ? (
                     <Tag color={utils._randomColor(text)}>True</Tag>
@@ -106,8 +117,20 @@ export default function AtomicResource(props: IAtomicResourceProps) {
                 ),
         },
         {
-            title: L("createByName", LocationKey),
-            dataIndex: "createByName",
+            title: L("isDeleted", LocationKey),
+            dataIndex: "isDeleted",
+            key: "isDeleted",
+            render: (text: boolean) =>
+                text === true ? (
+                    <Tag color={utils._randomColor(text)}>True</Tag>
+                ) : (
+                    <Tag color={utils._randomColor(text)}>False</Tag>
+                ),
+        },
+        {
+            title: L("lastModifierUserName", LocationKey),
+            dataIndex: "lastModifierUserName",
+            key: 'lastModifierUserName',
             render: (text: string) =>
                 text !== null && (text.toUpperCase() !== "ADMIN" || text.toUpperCase() !== "SYSTEM") ? (
                     <Tag color="#b3d4ff">{text}</Tag>
@@ -116,28 +139,39 @@ export default function AtomicResource(props: IAtomicResourceProps) {
                 ),
         },
         {
-            title: L("updatedOnUtc", LocationKey),
-            dataIndex: "updatedOnUtc",
-            render: (text: Date) => moment(text).format("DD/MM/YYYY hh:mm:ss"),
-        },
-        {
-            title: L("updatedOnUtc", LocationKey),
-            dataIndex: "createdOnUtc",
+            title: L("lastModificationTime", LocationKey),
+            dataIndex: "lastModificationTime",
+            key: 'lastModificationTime',
             render: (text: Date) => moment(text).format("DD/MM/YYYY hh:mm:ss"),
         },
         {
             title: L("ACTION", "COMMON"),
-            key: "x",
+            key: "X",
             width: 120,
-            render: (text: ReadPageLstResourceDto) => (
+            render: (text: TenantBasicDto) => (
                 <div style={{ textAlign: "center" }}>
                     <Tooltip title={L("EDIT", "COMMON")}>
                         <Button
                             type="link"
+                            disabled={text.isDeleted}
                             icon={<EditOutlined />}
-                            onClick={() => {
-                                onFill(text);
-                            }}
+                            onClick={() => onFill(text)}
+                        ></Button>
+                    </Tooltip>
+                    <Tooltip title={L("USER", "COMMON")}>
+                        <Button
+                            type="link"
+                            disabled={text.isDeleted}
+                            icon={<UsergroupAddOutlined />}
+                            onClick={() => onFill(text)}
+                        ></Button>
+                    </Tooltip>
+                    <Tooltip title={L("PERMISSION", "COMMON")}>
+                        <Button
+                            type="link"
+                            disabled={text.isDeleted}
+                            icon={<PartitionOutlined />}
+                            onClick={() => onFill(text)}
                         ></Button>
                     </Tooltip>
                 </div>
@@ -145,19 +179,16 @@ export default function AtomicResource(props: IAtomicResourceProps) {
         },
     ];
 
-    const [dataSelectFromTable, setdataSelectFromTable] = useState<React.Key[]>(
-        []
-    );
-
     const rowSelection = {
         onChange: (
             selectedRowKeys: React.Key[],
-            selectedRows: ReadPageLstResourceDto[]
+            selectedRows: TenantBasicDto[]
         ) => {
             setdataSelectFromTable(selectedRowKeys);
         },
-        getCheckboxProps: (record: ReadPageLstResourceDto) => ({
+        getCheckboxProps: (record: TenantBasicDto) => ({
             name: record.name,
+            disabled: record.isDeleted == true
         }),
     };
 
@@ -169,7 +200,7 @@ export default function AtomicResource(props: IAtomicResourceProps) {
 
     useEffect(() => {
         fetdataSearch();
-    }, [pageIndex, pageSize, search])
+    }, [pageIndex, pageSize, valueSearch]);
 
     //#region REMOVE
     const _removeItemSelect = () => {
@@ -200,64 +231,10 @@ export default function AtomicResource(props: IAtomicResourceProps) {
     };
     //#endregion
     //#region INSERT OR UPDATE FORM DATA
-    const [form] = Form.useForm();
-
-    const onFill = (value: ReadPageLstResourceDto | undefined) => {
+    
+    const onFill = (value: TenantBasicDto | undefined) => {
         setdataBeginEdit(value);
-        if (value === undefined) {
-            setisModalAdd(true);
-            form.resetFields();
-            setisModalVisible(true);
-        } else {
-            setisModalAdd(false);
-            form.setFieldsValue(value);
-            setisModalVisible(true);
-        }
-    };
-
-    const _onCancelModalAddOrEdit = () => {
-        form
-            .validateFields()
-            .then((values: ReadPageLstResourceDto) => {
-                if (
-                    values.name !== dataBeginEdit?.name
-                ) {
-                    _notificationEdit();
-                } else {
-                    form.setFieldsValue(undefined);
-                    setisModalVisible(false);
-                }
-            })
-            .catch((values) => {
-                if (
-                    values.values.description !== undefined ||
-                    values.values.name !== undefined ||
-                    values.values.typesRsc !== undefined ||
-                    values.values.isActive !== undefined
-                ) {
-                    _notificationEdit();
-                } else {
-                    form.setFieldsValue(undefined);
-                    setisModalVisible(false);
-                }
-            });
-    };
-
-    const _notificationEdit = () => {
-        Modal.confirm({
-            title: <>{L("WANNING_PROCESSS_DELETE", "COMMON")}</>,
-            icon: <ExclamationCircleOutlined />,
-            content: <>{L("CONTENT_CANCEL_EDIT", "COMMON")}</>,
-            okText: <>{L("OK", "COMMON")}</>,
-            cancelText: <>{L("CANCEL", "COMMON")}</>,
-            onOk: () => {
-                form.setFieldsValue(undefined);
-                setisModalVisible(false);
-            },
-            onCancel: () => {
-                setisModalVisible(true);
-            },
-        });
+        setonShowModal(!onShowModal);
     };
 
     const _searchDataOnClick = (page: number, pageSize: number) => {
@@ -265,35 +242,17 @@ export default function AtomicResource(props: IAtomicResourceProps) {
         setpageIndex(page);
     }
 
-    const _onOkModalAddOrEdit = () => {
-        setloadingButton(true);
-        form.validateFields().then((values) => {
-            services.createResource(values)
-                .then(rs => {
-                    if (rs.error) {
-                        notifyError("sdadasd", "dsadasdas");
-                    }
-                    else {
-
-                    }
-                }).catch(er => {
-
-                });
-        });
-    };
-
     var timeout: any = 0;
     const _onchangeInput = (text: any) => {
         if (timeout) {
             clearTimeout(timeout);
         }
         timeout = setTimeout(function () {
-            setsearch(text.target.value);
+            setvalueSearch(text.target.value);
         }, 500)
     }
 
     const _selectFileExport = (value: any) => {
-        console.log('value :>> ', value);
     }
     //#endregion
     return (
@@ -397,7 +356,7 @@ export default function AtomicResource(props: IAtomicResourceProps) {
                             type: "checkbox",
                             ...rowSelection,
                         }}
-                        rowKey={(record: ReadPageLstResourceDto) => record.id}
+                        rowKey={(record: TenantBasicDto) => record.id}
                         loading={loadingTable}
                         style={{ width: "100%" }}
                         size="small"
@@ -412,92 +371,13 @@ export default function AtomicResource(props: IAtomicResourceProps) {
                         }}
                     />
                 </Col>
-            </Row>
 
-            <Modal
-                title={<>{isModalAdd ? L("ADD", "COMMON") : L("EDIT", "COMMON")}</>}
-                visible={isModalVisible}
-                onOk={() => {
-                    _onOkModalAddOrEdit();
-                }}
-                onCancel={() => {
-                    _onCancelModalAddOrEdit();
-                }}
-                okText={<>{L("OK", "COMMON")}</>}
-                cancelText={<>{L("CANCEL", "COMMON")}</>}
-                maskClosable={false}
-                confirmLoading={loadingButton}
-            >
-                <Form layout="horizontal" {...formItemLayout} form={form}>
-                    <Form.Item
-                        label={L("ID", LocationKey)}
-                        name="id"
-                        hidden={isModalAdd}
-                    >
-                        <Input disabled />
-                    </Form.Item>
-                    <Form.Item
-                        label={L("name", LocationKey)}
-                        name="name"
-                        rules={[
-                            {
-                                required: true,
-                                message: <>{L("NOT_NULL", "COMMON")}</>,
-                            },
-                        ]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        label={L("typesRsc", LocationKey)}
-                        name="typesRsc"
-                        rules={[
-                            {
-                                required: true,
-                                message: <>{L("NOT_NULL", "COMMON")}</>,
-                            },
-                        ]}
-                    >
-                        <Select>
-                            { }
-                            {Object.keys(TypesRsc).map((key: any) => {
-                                if (!isNaN(Number(key))) {
-                                    return (
-                                        <Option value={Number(key)}>
-                                            {TypesRsc[key]}
-                                        </Option>
-                                    );
-                                }
-                            })}
-                        </Select>
-                    </Form.Item>
-                    <Form.Item
-                        label={L("description", LocationKey)}
-                        name="description"
-                        rules={[
-                            {
-                                required: true,
-                                message: <>{L("NOT_NULL", "COMMON")}</>,
-                            },
-                        ]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        label={L("isActived", LocationKey)}
-                        name="isActived"
-                        valuePropName="checked"
-                        rules={[
-                            {
-                                required: true,
-                                message: <>{L("NOT_NULL", "COMMON")}</>,
-                            },
-                        ]}
-                    >
-                        <Switch />
-                    </Form.Item>
-                </Form>
-            </Modal>
+                {onShowModal ? <InsertOrUpdate
+                    location={undefined}
+                    value={dataBeginEdit}
+                    onClose={() => { setonShowModal(false); _reloadData();}} />
+                    : <></>}
+            </Row>
         </>
     )
 };

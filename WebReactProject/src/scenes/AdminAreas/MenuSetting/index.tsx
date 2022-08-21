@@ -433,7 +433,7 @@ export default function MenuSetting(props: IMenuSettingProps) {
                 key={key}
                 title="Tìm kiếm"
                 show={search}
-                onChange={(value) => { console.log(value) }} />
+                onChange={(value) => {  }} />
         </>
     )
 };
